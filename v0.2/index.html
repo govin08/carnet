@@ -22,7 +22,6 @@
 
     const render = () => {
       list.innerHTML = "";
-      // todos.forEach((todo) => {
       todos.forEach((todo, index) => {
         list.innerHTML += `<li>${todo} <button onclick="todos.splice(${index}, 1); render();">X</button></li>`;
       });
