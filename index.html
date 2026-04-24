@@ -6,30 +6,12 @@
 </head>
 <body>
   <h1>carnet</h1>
+  <p>간단한 할일 관리 앱</p>
   
-  <input id="input" placeholder="할일 입력">
-  <button id="addBtn">추가</button>
-  <ul id="list"></ul>
-
-  <script>
-    const input = document.getElementById("input");
-    const addBtn = document.getElementById("addBtn");
-    const list = document.getElementById("list");
-
-    const todos = [];
-
-    const render = () => {
-      list.innerHTML = "";
-      todos.forEach((todo) => {
-        list.innerHTML += `<li>${todo}</li>`;
-      });
-    };
-
-    addBtn.addEventListener("click", () => {
-      todos.push(input.value);
-      input.value = "";
-      render();
-    });
-  </script>
+  <h2>버전</h2>
+  <ul>
+    <li><a href="v0.2/">v0.2</a> — 삭제 기능 추가</li>
+    <li><a href="v0.1/">v0.1</a> — 기본 할일 추가</li>
+  </ul>
 </body>
 </html>
