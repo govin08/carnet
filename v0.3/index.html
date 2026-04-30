@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>carnet</title>
+</head>
+<body>
+  <h1>carnet</h1>
+  
+  <p><a href="../">← 홈으로</a></p>
+  
+  <input id="input" placeholder="할일 입력">
+  <button id="addBtn">추가</button>
+  <ul id="list"></ul>
+
+  <script>
+    const input = document.getElementById("input");
+    const addBtn = document.getElementById("addBtn");
+    const list = document.getElementById("list");
+
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    const render = () => {
+      list.innerHTML = "";
+      todos.forEach((todo, index) => {
+        list.innerHTML += `<li>${todo} <button onclick="todos.splice(${index}, 1); localStorage.setItem('todos', JSON.stringify(todos)); render();">X</button></li>`;
+
+      });
+    };
+
+    addBtn.addEventListener("click", () => {
+      todos.push(input.value);
+      localStorage.setItem("todos", JSON.stringify(todos));
+      input.value = "";
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
