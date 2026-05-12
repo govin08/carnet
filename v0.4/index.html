@@ -23,7 +23,18 @@
     const render = () => {
       list.innerHTML = "";
       todos.forEach((todo, index) => {
-        list.innerHTML += `<li><input type="checkbox" ${todo.done ? "checked" : ""} onclick="todos[${index}].done = !todos[${index}].done; localStorage.setItem('todos', JSON.stringify(todos)); render();"> <span style="text-decoration: ${todo.done ? "line-through" : "none"}">${todo.text}</span> <button onclick="todos.splice(${index}, 1); localStorage.setItem('todos', JSON.stringify(todos)); render();">X</button></li>`;
+        list.innerHTML += `
+          <li>
+            <input type="checkbox" ${todo.done ? "checked" : ""} 
+                  onclick="todos[${index}].done = !todos[${index}].done; 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">
+            <span style="text-decoration: ${todo.done ? "line-through" : "none"}">${todo.text}</span>
+            <button onclick="todos.splice(${index}, 1); 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">X</button>
+          </li>
+        `;
       });
     };
 
