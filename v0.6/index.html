@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>carnet</title>
+</head>
+<body>
+  <h1>carnet</h1>
+  
+  <p><a href="../">← 홈으로</a></p>
+  
+  <input id="input" placeholder="할일 입력">
+  <input id="dateInput" type="date">
+  <button id="addBtn">추가</button>
+  <div>
+    <button onclick="currentFilter='all'; render();">전체</button>
+    <button onclick="currentFilter='today'; render();">오늘</button>
+    <button onclick="currentFilter='tomorrow'; render();">내일</button>
+    <button onclick="currentFilter='week'; render();">이번 주</button>
+    <button onclick="currentFilter='past'; render();">지난 일정</button>
+  </div>
+  <ul id="list"></ul>
+
+<script>
+    const input = document.getElementById("input");
+    const addBtn = document.getElementById("addBtn");
+    const list = document.getElementById("list");
+
+    const today = new Date().toISOString().slice(0, 10);
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 10);
+    const weekLater = new Date(Date.now() + 7 * 86400000).toISOString().slice(0, 10);
+
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+    let currentFilter = "all";
+
+    const render = () => {
+      list.innerHTML = "";
+      todos.forEach((todo, index) => {
+        // 필터 검사
+        if (currentFilter === "today" && todo.date !== today) return;
+        if (currentFilter === "tomorrow" && todo.date !== tomorrow) return;
+        if (currentFilter === "week" && (todo.date < today || todo.date > weekLater)) return;
+        if (currentFilter === "past" && todo.date >= today) return;
+        // "all"은 통과
+        
+        list.innerHTML += `
+          <li>
+            <input type="checkbox" ${todo.done ? "checked" : ""} 
+                  onclick="todos[${index}].done = !todos[${index}].done; 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">
+            <span style="text-decoration: ${todo.done ? "line-through" : "none"}">${todo.text}</span>
+            <span style="margin-left: 10px; color: gray;">${todo.date || ""}</span>
+            <button onclick="todos.splice(${index}, 1); 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">X</button>
+          </li>
+        `;   // 기존 그대로
+      });
+    };
+
+    const dateInput = document.getElementById("dateInput");
+
+    addBtn.addEventListener("click", () => {
+      todos.push({
+        text: input.value,
+        done: false,
+        date: dateInput.value
+      });
+      localStorage.setItem("todos", JSON.stringify(todos));
+      input.value = "";
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
