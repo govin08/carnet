@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>carnet</title>
+</head>
+<body>
+  <h1>carnet</h1>
+  
+  <p><a href="../">← 홈으로</a></p>
+  
+  <input id="input" placeholder="할일 입력">
+  <input id="dateInput" type="date">
+  <button id="addBtn">추가</button>
+  <ul id="list"></ul>
+
+  <script>
+    const input = document.getElementById("input");
+    const addBtn = document.getElementById("addBtn");
+    const list = document.getElementById("list");
+
+    const todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+    const render = () => {
+      list.innerHTML = "";
+      todos.forEach((todo, index) => {
+        list.innerHTML += `
+          <li>
+            <input type="checkbox" ${todo.done ? "checked" : ""} 
+                  onclick="todos[${index}].done = !todos[${index}].done; 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">
+            <span style="text-decoration: ${todo.done ? "line-through" : "none"}">${todo.text}</span>
+            <span style="margin-left: 10px; color: gray;">${todo.date || ""}</span>
+            <button onclick="todos.splice(${index}, 1); 
+                            localStorage.setItem('todos', JSON.stringify(todos)); 
+                            render();">X</button>
+          </li>
+        `;
+      });
+    };
+
+    const dateInput = document.getElementById("dateInput");
+
+    addBtn.addEventListener("click", () => {
+      todos.push({
+        text: input.value,
+        done: false,
+        date: dateInput.value
+      });
+      localStorage.setItem("todos", JSON.stringify(todos));
+      input.value = "";
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
